@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588549850660.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2301525581",
+    "id" : "39144B4E",
+    "lastKnownWriteTime" : 1588549915,
+    "last_content_update" : 1588549915588,
+    "path" : "C:/Users/eduar/Google Drive (1)/Work/Webpage/Blogdown/website/content/post/NBA_EDA/index.Rmd",
+    "project_path" : "content/post/NBA_EDA/index.Rmd",
+    "properties" : {
+        "cursorPosition" : "3,16",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
