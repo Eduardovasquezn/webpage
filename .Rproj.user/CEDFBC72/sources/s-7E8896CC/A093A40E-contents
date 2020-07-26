@@ -72,7 +72,7 @@ data_churn %>%
 
 * Se observa la distribución de la data:
 
-  + International calls presenta una distribución con asimetría positiva. En ese tenor, se procede a usar un algoritmo de k-nearest neighbors.
+  + International calls presenta una distribución con asimetría positiva. Se procede a usar un algoritmo de k-nearest neighbors.
 
   + Por el contrario, International charges tiende a converger a una distribución normal, por ende, se opta por imputar los valores con la media.  
 
@@ -302,9 +302,9 @@ stargazer::stargazer(Logit, type='text')
 
 * Debido a problemas con la clase desequilibrada en la variable dependiente, se utiliza la técnica de upsampling.
 
-* Para la modelización de los datos se estima un modelo ensamblador ya que presenta la ventaja de   mejorar la precisión, estabilidad del modelo y evitar overfitting. Se utiliza la técnica de bagging para disminuir la varianza de las predicciones. Esta se basa en la combinación de las predicciones de múltiples modelos "débiles" para formar un modelo robusto. Cada uno de los modelos se elabora en base a diferentes remuestreos con remplazo de la población. Para tales fines se modeliza con el random forest, en el cual, se crean múltiples árboles de decisión para formar todo un bosque de árboles. En este se seleccionan de entre todos los predictores una muestra aleatoria de "m" predictores como candidatos para cada modelo. En ese tenor, es una combinación de remuestreo de observaciones y de predictores.
+* Para la modelización de los datos se estima un modelo ensamblador ya que presenta la ventaja de   mejorar la precisión, estabilidad del modelo y evitar overfitting. Se utiliza la técnica de bagging para disminuir la varianza de las predicciones. Esta se basa en la combinación de las predicciones de múltiples modelos "débiles" para formar un modelo robusto. Cada uno de los modelos se elabora en base a diferentes remuestreos con reemplazo de la población. Para tales fines se modeliza con el random forest, en el cual, se crean múltiples árboles de decisión para formar todo un bosque de árboles. En este se seleccionan de entre todos los predictores una muestra aleatoria de "m" predictores como candidatos para cada modelo. En ese tenor, es una combinación de remuestreo de observaciones y de predictores.
 
-* La métrica a maximizar es el AUC. En ese tenor, se procede a realizar el tuning de los hiperparámetros. 
+* La métrica a maximizar es el AUC y se procede a realizar el tuning de los hiperparámetros. 
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
