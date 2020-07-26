@@ -1,7 +1,7 @@
 ---
 title: "Modelo Churn"
 author: "Eduardo Vásquez Nolasco"
-date: "25/07/2020"
+date: 2020-07-25
 output: html_document
 ---
 
@@ -405,7 +405,7 @@ tune_rf %>%
 ```{r, cache = TRUE, echo = FALSE, message = FALSE, warning = FALSE}
 rf_grid <- grid_regular(
   mtry(range = c(4, 10)),
-  min_n(range = c(35,45)),
+  min_n(range = c(25,35)),
   levels = 5
 )
 
