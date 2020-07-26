@@ -1,0 +1,422 @@
+---
+title: "Análisis exploratorio de la evolución de la National Basketball Association (NBA). 1950-2019"
+author: Eduardo Vásquez Nolasco
+date: 2020-02-21
+output: html_document
+---
+ 
+ 
+```{r setup, include=FALSE}
+library(lubridate)
+library(astsa)
+library(stats)
+library(ggplot2)
+library(scales)
+library(parallel)
+library(readxl)
+library(aTSA)
+library(purrr)
+library(seastests)
+library(psych)
+library(dplyr)
+library(tidyr)
+library(gganimate)
+library(babynames)
+library(plotly)
+library(av)
+library(gifski)
+library(magick)
+
+DataSeasons<-read_excel("C:/Users/eduar/Google Drive (1)/Work/Short articles/NBA/Data/Seasons_Stats.xlsx", 
+                                  col_types = c("numeric", "numeric", "text", 
+                                                          "text", "numeric", "text", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric", "numeric", 
+                                                          "numeric", "numeric" ))
+DataPlayers<-read.csv("C:/Users/eduar/Google Drive (1)/Work/Short articles/NBA/Data/Players.csv")
+
+ 
+Data1.0<- merge(x=DataSeasons,y=DataPlayers, by="Player")
+
+attach(Data1.0)
+
+#exclude<-c("Player", "Tm", "Pos","collage","birth_city","birth_state")
+#names(select(Data1, -exclude))
+#Numerica<-apply(select(Data1, -exclude), 2, as.numeric)
+#Caracteres<-Data1[,c("Player", "Tm", "Pos","collage","birth_city","birth_state")]
+#Data1.0<-data.frame(Numerica,Caracteres) 
+Data1.0$Player<-gsub("*", "", Data1.0$Player, fixed=TRUE)
+Data1.0$Pos<-gsub("-.*$", "", Data1.0$Pos) 
+Data1.0$Pos<-ifelse(Data1.0$Pos=="F","PF",Data1.0$Pos)
+Data1.0$Pos<-ifelse(Data1.0$Pos=="G","SG",Data1.0$Pos)
+Data1.0$Pos <- factor(Data1.0$Pos, levels = c("C","PF","SF","SG","PG"))
+colnames(Data1.0)<-gsub("%", ".", colnames(Data1.0))
+Data1.0$Player<-gsub("\\*", "", Player)
+```
+ 
+ 
+## Introducción
+
+
+Durante las últimas siete décadas, 4286 jugadores de baloncesto han jugado en la NBA. Esto representa alrededor del 0.001% de la población de Estados Unidos en el 2019. En ese sentido, se destaca la dificultad y la competencia para poder jugar en esta liga. Por otro lado, se resalta que el esquema de juego ha evolucionado en este lapso de tiempo.
+
+En esta entrega, se presenta un análisis de la evolución del estilo de juego según la posición de juego. Para tales fines, se utilizan las bases de datos proporcionadas por Omri Goldstein desde 1950-2017  (https://www.kaggle.com/drgilermo/nba-players-stats#Seasons_Stats.csv) y se realiza un web scrapping en basketball-reference para completar los datos hasta el 2019. 
+
+
+Para realizar las visualizaciones animadas se utiliza el paquete plotly. Este permite graficar los datos de una forma más interactiva para el usuario. **Para fines de analizar un grupo en específico, sólo es necesario deseleccionar aquellos que no se desean estudiar, para esto, sólo se debe dar click sobre las leyendas que representan cada posición, las cuales, están ubicadas en el lateral derecho.** De tal manera, que solo aparezcan datos de los grupos deseados.
+
+
+**Interpretación Figura 1**
+
+
+En la Figura 1 se muestra la relación del peso y la estatura según la posición de juego. 
+
+* Se observa que los PG son los que presentan menor estatura y peso, mientras que los C son los más altos y pesados. 
+
+* Los SG y los SF presentan similares contexturas físicas.
+
+* Los jugadores más altos son los que presentan mayor peso.
+
+* Muggsey es el jugador más bajo en la historia de la NBA (160 cm).
+
+* Sim Bhullar es el jugador con mayor peso en la historia de la NBA (163 kg).
+
+* Manute Bol y Gheorghe Muresan son los jugadores más altos que han jugado en la NBA (231 cm).
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+  RangoPeriodo<-Data1.0 %>% 
+  group_by(Player) %>% 
+  summarise(Periodo=paste(min(Year),max(Year),sep = "-")) 
+
+Data1.0Red<-Data1.0 %>% 
+  group_by(Player,Pos) %>% 
+  select(Player,Pos,Year,weight,height)
+
+Data1.0Reducida<-left_join(x=Data1.0Red,y=RangoPeriodo, by="Player") %>%  distinct(Player,weight,height,Pos,Periodo) %>% 
+  as.data.frame()
+
+ggplotly(Data1.0Reducida %>% 
+           ggplot(aes(x=weight,y=height,
+                      text = paste('Jugador:', Player,
+                                   '<br>Peso:', weight, 
+                                   '<br>Estatura:', height,
+                                   '<br>Periodo:', Periodo)))+geom_point(aes(colour = Pos),size=.5)+
+           labs(title = "Figura 1. Contexto físico según posición de juego",
+                x = "Peso (kg)", y = "Estatura (cm)",colour="Posición")+theme_minimal() +
+           scale_y_continuous(limits = c(160,235),breaks = seq(160, 235, by = 15))+
+           scale_x_continuous(limits = c(50,170))+
+           theme(axis.title.x = element_text(vjust = -1),
+                 axis.title.y = element_text(vjust = 1.5)) , tooltip = "text")  
+```
+Posiciones: PG: Point Guard - Base.
+SG: Shooting Guard - Escolta.
+SF: Small Forward - Alero.
+PF: Power Forward - Ala pívot.
+C: Center - pívot.
+ 
+
+
+
+**Interpretación Figura 2 y 3**
+
+
+A medida de que se incrementa la estatura de una persona, se aumenta la probabilidad de entrar en la NBA (Stephens-Davidowitz, 2013).  
+
+
+* La estatura promedio de un jugador de la NBA es de 199.47 cm, mientras que la de un hombre mayor de 20 años en Estados Unidos (USA) es de 175.26, destacando así, la brecha existente entre ambos (Figura 2). 
+
+* Solamente el 0.43% de los jugadores que han estado en la NBA han medido menos de 175.26 cm.
+
+* Se destaca que el peso de los jugadores de la NBA es mayor que el de un ciudadano promedio (Figura 3). 
+
+* El 36.40% de los jugadores han pesado menos que un ciudadano promedio.
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplotly(
+DataPlayers %>% 
+  mutate(Estatura=height) %>% 
+  ggplot(aes(x=Estatura ,group=1,
+             text = paste('Densidad:', density(DataPlayers$height)$y,
+                          '</br>Estatura1: ', Estatura)))+
+  geom_density(colour="#1F3552",
+               fill="#4271AE",
+               alpha = .1)+
+  theme_minimal()+
+  geom_vline( aes(xintercept=mean(height),color="NBA"),
+              linetype="dashed",size=.5)+ 
+  geom_vline(aes(xintercept = 175.26,
+             color="Hombre en USA"),
+             linetype="dashed",size=.5 ) +
+  labs(title = "Figura 2. Distribución de densidad de la estatura",x = "Estatura (cm)", y = "Densidad")+
+  scale_color_manual(name = "Media", values = c(NBA = "orange", `Hombre en USA` = "mediumvioletred")) 
+)
+
+MenorMediaHeight<-DataPlayers%>% 
+  filter(height<= 175.26) %>% 
+  summarise(Menor=n())  
+ 
+
+
+TotalHeight<-DataPlayers %>% 
+  select(height) %>% 
+  summarise(n())
+
+# MenorMediaHeight/TotalHeight*100
+
+
+ggplotly(
+   DataPlayers %>% 
+     mutate(Peso=weight) %>% 
+     ggplot(aes(x=Peso ,group=1,
+                text = paste('Densidad:', density(DataPlayers$height)$y,
+                             '</br>Estatura1:', Peso)))+
+     geom_density(colour="#1F3552",
+                  fill="#4271AE",
+                  alpha = .1)+
+     theme_minimal()+
+     geom_vline( aes(xintercept=mean(weight),color="NBA"),
+                 linetype="dashed",size=.5)+ 
+     geom_vline(aes(xintercept = 89.72,
+                    color="Hombre en USA"),
+                linetype="dashed",size=.5 ) +
+     labs(title = "Figura 3. Distribución de densidad del peso",x = "Peso (kg)", y = "Densidad")+
+     scale_color_manual(name = "Media", values = c(NBA = "orange", `Hombre en USA` = "mediumvioletred"))
+ )
+
+
+MenorMediaWeight<-DataPlayers%>% 
+  filter(weight<= 89.72) %>% 
+  summarise(Menor=n()) 
+
+
+
+TotalWeight<-DataPlayers %>% 
+  select(weight) %>% 
+  summarise(n())
+
+# MenorMediaWeight/TotalWeight*100
+```
+
+
+**Interpretación Figura 4**
+
+
+* Se muestra que los jugadores de la NBA son cada vez más altos y existe una mayor variabilidad de la estatura de estos según su posición de juego. 
+
+* La distribución de las estaturas pasa de una asimetría negativa a una positiva. 
+
+* Se presenta una mayor dispersión en los datos, especialmente en los PG. Esto último está asociado a los cambios en los esquemas que permiten que jugadores de menor estatura puedan acoplarse al estilo de juego.
+
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+Data1.0 %>% 
+  mutate(Decada=cut(Data1.0$Year, breaks = c(1949,1959,1969,1979,1989,1999,2009,Inf ),
+                    labels = c("50s","60s","70s","80s","90s","2000s","2010s"))) %>% 
+ plot_ly( x = ~Decada, y = ~height, color = ~Pos, type = "box",
+               text = ~paste('</br> Jugador:', Player,
+                             '</br> Estatura:', round(height,2)))%>%
+                      layout(boxmode = "group",
+                      title="Figura 4. Evolución de la estatura de los jugadores según posición de juego",
+                      xaxis = list(title = "Década"), 
+                      yaxis = list(title = "Estatura (cm)")) 
+```
+
+
+**Interpretación Figura 5**
+
+
+* Se observan incrementos en el peso de los jugadores en las distintas posiciones. 
+
+* Se ha producido un aumento en la variabilidad de los pesos de los jugadores en las distintas posiciones.
+
+* Los C son los que tienen mayor variabilidad de pesos, mientras que el peso de los SG se encuentra más centrado.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+Data1.0 %>% 
+  mutate(Decada=cut(Data1.0$Year, breaks = c(1949,1959,1969,1979,1989,1999,2009,Inf ),
+                    labels = c("50s","60s","70s","80s","90s","2000s","2010s"))) %>% 
+ plot_ly( x = ~Decada, y = ~weight, color = ~Pos, type = "box",
+               text = ~paste('</br> Jugador:', Player,
+                             '</br> Peso:', round(weight,2)))%>%
+                      layout(boxmode = "group",
+                      title="Figura 5. Evolución del peso de los jugadores según posición de juego",
+                      xaxis = list(title = "Década"), 
+                      yaxis = list(title = "Peso (kg)") )
+ 
+```
+
+
+**Interpretación Figura  6, 7 y 8**
+
+
+* En este nuevo esquema de juego, los SG y los SF pasan a tener más importancia, mientras que los C han perdido la significancia que poseían en el pásado (Figura 6). 
+
+* Los C siguen siendo los líderes en las estadísticas avanzadas como el Player Efficiency Rating (PER) y Value over Replacement Player (VORP) debido a sus aportes defensivos (Figura 7 y 8).
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+Data1.0 %>% 
+    mutate(Decada=cut(Data1.0$Year, breaks = c(1949,1959,1969,1979,1989,1999,2009,Inf ),
+                     labels = c("50s","60s","70s","80s","90s","2000s","2010s"))) %>% 
+ group_by(Player,Decada,Pos) %>% 
+   summarize(media=mean((PTS/G)))   %>% 
+ plot_ly( x = ~Decada, y = ~media, color = ~Pos, type = "box",
+          text = ~paste('</br> Jugador:', Player,
+                        '</br> Puntos:', round(media,2)))%>%
+   layout(boxmode = "group",
+          title="Figura 6. Evolución de puntos por partido según posición de juego",
+          xaxis = list(title = "Década"), 
+          yaxis = list(title = "Puntos por partido (Promedio)") )
+ 
+ 
+ 
+Data1.0 %>% 
+  mutate(Decada=cut(Data1.0$Year, breaks = c(1949,1959,1969,1979,1989,1999,2009,Inf ),
+                    labels = c("50s","60s","70s","80s","90s","2000s","2010s"))) %>% 
+  group_by(Player,Decada,Pos) %>% 
+  filter(sum(G)>300) %>% 
+  summarize(media=mean(PER))   %>% 
+  plot_ly( x = ~Decada, y = ~media, color = ~Pos, type = "box",
+           text = ~paste('</br> Jugador:', Player,
+                         '</br> PER:', round(media,2)))%>%
+  layout(boxmode = "group",
+         title="Figura 7. Evolución de PER según posición de juego",
+         xaxis = list(title = "Década"), 
+         yaxis = list(title = "PER") )
+
+Data1.0 %>% 
+  mutate(Decada=cut(Data1.0$Year, breaks = c(1949,1959,1969,1979,1989,1999,2009,Inf ),
+                    labels = c("50s","60s","70s","80s","90s","2000s","2010s"))) %>% 
+  group_by(Player,Decada,Pos) %>% 
+  filter(sum(G)>300) %>% 
+  summarize(media=mean(VORP))   %>% 
+  plot_ly( x = ~Decada, y = ~media, color = ~Pos, type = "box",
+           text = ~paste('</br> Jugador:', Player,
+                         '</br> VORP:', round(media,2)))%>%
+  layout(boxmode = "group",
+         title="Figura 8. Evolución de VORP según posición de juego",
+         xaxis = list(title = "Década"), 
+         yaxis = list(title = "VORP") )
+  
+```  
+
+
+Para el caso de las animaciones dinámicas se utiliza el paquete gganimate. Ojo: Para poder crear los archivos en gif se necesitan los paquetes av y gifski.
+
+
+**Interpretación Figura 9**
+
+  
+* La cantidad de triples intentados ha cambiado radicalmente el juego de baloncesto. 
+
+* Se ha pasado de un juego cerrado en la pintura a uno más abierto, en el cual, los C pasan de promediar 0.03 tiros de 3 en 1980 a 0.97 tiros de 3 por partido. 
+
+* Asimismo, esto le ha abierto la posibilidad a jugadores de baja estatura poder entrar en la NBA y poder ser superestrellas.
+  
+  
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ExAnios<-Data1.0 %>% 
+  group_by(Pos,Year) %>% 
+  filter(Year>1979) %>% 
+  summarize(Cantidad=sum(ThreePA)) %>% 
+  select(Year)
+
+  Anios<-ExAnios$Year
+  
+Data1.0 %>% 
+  group_by(Pos,Year) %>% 
+  filter(Year>1979) %>% 
+  summarize(Cantidad=sum(ThreePA))   %>% 
+  ggplot(aes(x=Year,y=Cantidad,color=Pos))+geom_line(lty=1 ,size=.8)+
+ scale_y_continuous(labels = scales::comma) + 
+  labs(colour="Posición") + transition_reveal(Anios)  +geom_point()+ labs(title = 'Evolución de triples intentados según posición - {as.integer(frame_along)}', x = 'Años', y = 'Cantidad de triples intentados')+ ease_aes('linear')
+ 
+
+#img <- png::readPNG("C:/Users/eduar/Google Drive (1)/Work/Short articles/NBA/Data/firma.png")
+#rast <- grid::rasterGrob(img, interpolate = T)
+#animacion<-Data1.0 %>% 
+#   group_by(Pos,Year) %>% 
+#   filter(Year>1979) %>% 
+#   summarize(Cantidad=sum(ThreePA))   %>% 
+#   ggplot(aes(x=Year,y=Cantidad,color=Pos))+geom_line(lty=1 ,size=.8)+
+#   annotation_custom(rast, ymin = 18000, ymax = 20000, xmin = 1975,xmax=2000)+
+#   scale_y_continuous(labels = scales::comma) + 
+#   theme(plot.title = element_text(size = 30, face = "bold"), 
+#         axis.title.y = element_text(size=28,vjust = 1.5),
+#         axis.title.x = element_text(size=28,vjust = 1.5),
+#         axis.text = element_text(size=28),
+#         legend.title=element_text(size=28), 
+#         legend.text=element_text(size=28),
+#         legend.key.size = unit(1.5, "cm"),
+#         legend.key.width = unit(1.5,"cm") )+
+#   
+#   labs(colour="Posición") + transition_reveal(Anios)  +geom_point()+ labs(title = 'Evolución de triples intentados según posición - {as.integer(frame_along)}', x = 'Años', y = 'Cantidad de triples intentados')+ ease_aes('linear')
+ 
+# animate(animacion, height = 1000, width =1600)
+ 
+# anim_save("TriplesIntentados.gif" )
+  
+ 
+```
+
+
+**Interpretación Figura 10**
+
+
+* Se destaca que el promedio de faltas por partido se ha reducido. 
+
+* En ese sentido, las reglas que se están implementando en la NBA para propiciar un juego más limpio han producido resultados efectivos.
+  
+  
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ExAniosF<-Data1.0 %>% 
+  group_by( Year) %>% 
+  summarize(Cantidad=mean(PF/G))  %>% 
+  select(Year)
+
+  AniosF<-ExAniosF$Year
+
+
+ 
+Data1.0 %>% 
+  group_by(Year) %>% 
+  summarize(Cantidad=mean(PF/G))   %>% 
+  ggplot(aes(x=Year,y=Cantidad))+geom_line(lty=1 ,size=.8, colour="midnightblue")+
+
+  theme_minimal()  + transition_reveal(AniosF)  +geom_point() + labs(title = 'Figura 10. Evolución del promedio de faltas por partido - {as.integer(frame_along)}', x = 'Años', y = 'Faltas')+ ease_aes('linear')
+  
+ 
+
+ 
+ 
+```
+
+
+**Comentarios finales**
+
+La NBA ha pasado por un proceso de transición en donde el esquema de juego ha evolucionado y consigo las características físicas necesarias para un jugador en cada posición. De este modo, se han abierto las puertas para que una mayor cantidad de atletas puedan competir en la liga.
+
+
+Para más información sobre los códigos utilizados, acceder a [Github](https://github.com/Eduardovasquezn/NBA-EDA).
+
+<style>
+body {
+text-align: justify}
+</style>

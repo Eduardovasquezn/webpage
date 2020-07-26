@@ -541,6 +541,8 @@ plot_confusion_matrix(tidy(confusionMatrix(resulados$actual, resulados$predicted
   
   
   
+Para información sobre los códigos utilizados, acceder a [Github](https://github.com/Eduardovasquezn/Modelo-Churn-Telecomunicaciones).
+  
 <style>
 body {
 text-align: justify}
