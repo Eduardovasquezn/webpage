@@ -145,13 +145,14 @@ for(i in 1:nrow(datos_imputados_mco))
 }
 
  
- 
+summary(data_churn$Total.intl.calls)
+summary(data_churn$Total.intl.charge) 
+
 # Verificar media de los datos imputados vs los datos reales
 summary(datos_imputados_knn[1])
 summary(datos_imputados_mco[5])
 
-summary(data_churn$Total.intl.calls)
-summary(data_churn$Total.intl.charge)
+
 
 datos_imputados <- 
   data.frame(International_calls1 = datos_imputados_knn$International_calls,
@@ -434,7 +435,7 @@ tune_rf %>%
 
 ```{r, cache = TRUE, echo = FALSE, message = FALSE, warning = FALSE}
 rf_grid <- grid_regular(
-  mtry(range = c(4, 8)),
+  mtry(range = c(4, 10)),
   min_n(range = c(30,45)),
   levels = 5
 )
@@ -523,9 +524,9 @@ final_model <- final_wf %>%
   
 
 # Confussion matrix
-final_model %>% 
-  collect_predictions() %>% 
-  conf_mat(Churn, .pred_class)
+#final_model %>% 
+#  collect_predictions() %>% 
+#  conf_mat(Churn, .pred_class)
 
  
 

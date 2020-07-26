@@ -1,6 +1,19 @@
-"0"," "
-"0"," "
-"0"," "
-"0","resulados <-  final_model %>%"
-"0","  collect_predictions() %>%"
-"0","    select(actual = Churn, predicted = .pred_class)  "
+"0","final_model %>% 
+  collect_predictions() %>% 
+  conf_mat(Churn, .pred_class)
+"
+"1","          Truth
+"
+"1","Prediction"
+"1"," FALSE"
+"1"," TRUE"
+"1","
+     FALSE"
+"1","   702"
+"1","   21"
+"1","
+     TRUE "
+"1","    17"
+"1","   93"
+"1","
+"
