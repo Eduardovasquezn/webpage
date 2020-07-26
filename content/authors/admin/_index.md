@@ -37,7 +37,7 @@ user_groups:
 - Visitors
 ---
 
-Economista interesado en investigaciones económicas y sociales, econometría, data science, machine learning, business intelligence, evaluación de impacto, análisis estadístico, microeconomía y política económica.
+Economista interesado en investigaciones económicas y sociales, econometría, machine learning, data science, diseño de experimentos, evaluación de impacto, análisis estadístico y microeconomía.
 
 Comprometido con los estudios sobre temas económicos, sociales y el diseño de políticas públicas basadas en evidencia empírica que favorezcan el desarrollo de la República Dominicana.
 
