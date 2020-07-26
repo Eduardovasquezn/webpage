@@ -13,6 +13,16 @@
   </url>
   
   <url>
+    <loc>/post/churn/</loc>
+    <lastmod>2020-07-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-07-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/project/clustering-nba-players/</loc>
     <lastmod>2020-03-08T00:00:00+00:00</lastmod>
   </url>
@@ -38,11 +48,6 @@
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2020-02-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/publication-type/3/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url>
@@ -58,7 +63,7 @@
   </url>
   
   <url>
-    <loc>/author/pepito/</loc>
+    <loc>/author/eduardo-vasquez-nolasco/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url>
   
