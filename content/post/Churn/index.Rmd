@@ -562,7 +562,7 @@ plot_confusion_matrix(tidy(confusionMatrix(resulados$actual, resulados$predicted
                       targets_col = "Reference", 
                       predictions_col = "Prediction",
                       counts_col = "n")
- 
+# blogdown::serve_site()
 ```
 
 ### Notas finales
@@ -581,3 +581,5 @@ Para información sobre los códigos utilizados, acceder a [Github](https://gith
 body {
 text-align: justify}
 </style>
+
+ 

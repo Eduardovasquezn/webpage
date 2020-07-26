@@ -5,16 +5,16 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2127853386",
+    "hash" : "3770833120",
     "id" : "A093A40E",
-    "lastKnownWriteTime" : 1595786036,
-    "last_content_update" : 1595786036622,
+    "lastKnownWriteTime" : 1595787106,
+    "last_content_update" : 1595787106820,
     "path" : "C:/Users/eduar/Google Drive (1)/Work/Webpage/Blogdown/webpage/content/post/Churn/index.Rmd",
     "project_path" : "content/post/Churn/index.Rmd",
     "properties" : {
-        "cursorPosition" : "528,1",
+        "cursorPosition" : "564,1",
         "last_setup_crc32" : "A0CDF3B9d5fc6b27",
-        "scrollLine" : "529"
+        "scrollLine" : "558"
     },
     "read_only" : false,
     "read_only_alternatives" : [
