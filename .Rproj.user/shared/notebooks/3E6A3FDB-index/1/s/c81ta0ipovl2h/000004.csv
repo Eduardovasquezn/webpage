@@ -1,0 +1,6 @@
+"0"," "
+"0"," "
+"0"," "
+"0","resulados <-  final_model %>%"
+"0","  collect_predictions() %>%"
+"0","    select(actual = Churn, predicted = .pred_class)  "

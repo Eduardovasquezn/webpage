@@ -1,0 +1,8 @@
+"0","best_auc <- select_best(rf_model_tune, ""roc_auc"")"
+"0",""
+"0","final_rf <- finalize_model("
+"0","  tune_spec,"
+"0","  best_auc"
+"0",")"
+"0",""
+"0"," "

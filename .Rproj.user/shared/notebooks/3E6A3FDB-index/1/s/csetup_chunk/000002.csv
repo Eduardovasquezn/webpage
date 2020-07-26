@@ -1,0 +1,138 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0",""
+"0","library(dplyr)"
+"2","Registered S3 method overwritten by 'dplyr':
+  method           from
+  print.rowwise_df     
+"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(patchwork)"
+"2","package ‘patchwork’ was built under R version 4.0.2"
+"0","library(ggplot2)"
+"0","library(recipes)"
+"2","
+Attaching package: ‘recipes’
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    step
+
+"
+"0","library(tidyr)"
+"0","library(tidymodels)"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"
+"2","[37m-- [1mAttaching packages[22m -------------------------------------- tidymodels 0.1.0 --[39m
+"
+"2","[37m[32mv[37m [34mbroom    [37m 0.5.6     [32mv[37m [34mrsample  [37m 0.0.6
+[32mv[37m [34mdials    [37m 0.0.6     [32mv[37m [34mtibble   [37m 3.0.1
+[32mv[37m [34minfer    [37m 0.5.1     [32mv[37m [34mtune     [37m 0.1.0
+[32mv[37m [34mparsnip  [37m 0.1.1     [32mv[37m [34mworkflows[37m 0.1.1
+[32mv[37m [34mpurrr    [37m 0.3.4     [32mv[37m [34myardstick[37m 0.0.6[39m
+"
+"2","[37m-- [1mConflicts[22m ----------------------------------------- tidymodels_conflicts() --
+[31mx[37m [34mpurrr[37m::[32mdiscard()[37m masks [34mscales[37m::discard()
+[31mx[37m [34mdplyr[37m::[32mfilter()[37m  masks [34mstats[37m::filter()
+[31mx[37m [34mdplyr[37m::[32mlag()[37m     masks [34mstats[37m::lag()
+[31mx[37m [34mdials[37m::[32mmargin()[37m  masks [34mggplot2[37m::margin()
+[31mx[37m [34mrecipes[37m::[32mstep()[37m  masks [34mstats[37m::step()[39m
+"
+"0","library(themis)"
+"2","package ‘themis’ was built under R version 4.0.2"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 methods overwritten by 'themis':
+  method               from   
+  bake.step_downsample recipes
+  bake.step_upsample   recipes
+  prep.step_downsample recipes
+  prep.step_upsample   recipes
+  tidy.step_downsample recipes
+  tidy.step_upsample   recipes
+"
+"2","
+Attaching package: ‘themis’
+
+"
+"2","The following objects are masked from ‘package:recipes’:
+
+    step_downsample, step_upsample, tunable.step_downsample,
+    tunable.step_upsample
+
+"
+"0","library(corrplot)"
+"2","corrplot 0.84 loaded
+"
+"0","library(recipes)"
+"0","library(modeldata)"
+"2","package ‘modeldata’ was built under R version 4.0.2"
+"0","library(cvms)"
+"2","package ‘cvms’ was built under R version 4.0.2"
+"0","library(caret)"
+"2","Loading required package: lattice
+"
+"2","
+Attaching package: ‘caret’
+
+"
+"2","The following objects are masked from ‘package:yardstick’:
+
+    precision, recall, sensitivity, specificity
+
+"
+"2","The following object is masked from ‘package:purrr’:
+
+    lift
+
+"
+"0","library(vip)"
+"2","
+Attaching package: ‘vip’
+
+"
+"2","The following object is masked from ‘package:utils’:
+
+    vi
+
+"
+"0","library(yardstick)"
+"0","library(plotly)"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"0","data_churn <- read.csv(""Data/data_churn.csv"")"
+"0",""
