@@ -5,10 +5,7 @@ date: 2020-07-25
 output: html_document
 ---
 
-<style>
-body {
-text-align: justify}
-</style>
+
 
 # Modelo Churn
 
@@ -543,3 +540,8 @@ plot_confusion_matrix(tidy(confusionMatrix(resulados$actual, resulados$predicted
   + Stacking de modelos.
   
   
+  
+<style>
+body {
+text-align: justify}
+</style>

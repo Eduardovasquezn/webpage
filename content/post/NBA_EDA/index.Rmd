@@ -4,10 +4,8 @@ author: Eduardo Vásquez Nolasco
 date: 2020-02-21
 output: html_document
 ---
-<style>
-body {
-text-align: justify}
-</style>
+ 
+ 
 ```{r setup, include=FALSE}
 library(lubridate)
 library(astsa)
@@ -417,3 +415,8 @@ La NBA ha pasado por un proceso de transición en donde el esquema de juego ha e
 
 
 Para más información sobre los códigos utilizados, acceder a [Github](https://github.com/Eduardovasquezn/NBA-EDA).
+
+<style>
+body {
+text-align: justify}
+</style>
